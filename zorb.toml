@@ -1,0 +1,10 @@
+[package]
+name = "@sync/parking_lot"
+version = "0.12.5"
+description = "Fast mutexes, RwLocks, Once, Condvar for Zeta — no poisoning, const constructors"
+license = "MIT"
+repository = "https://github.com/murphsicles/parking_lot"
+readme = "README.md"
+
+[fmt]
+style = "zeta-strict"

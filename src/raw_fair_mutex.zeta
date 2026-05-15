@@ -1,0 +1,54 @@
+// Auto-converted from /tmp/df-parking_lot-0.12.5/parking_lot-0.12.5/src/raw_fair_mutex.rs
+
+use crate::raw_mutex::RawMutex;
+use lock_api::RawMutexFair;
+/// Raw fair mutex type backed by the parking lot.
+pub struct RawFairMutex {
+ (RawMutex),
+}
+
+unsafe impl lock_api::RawMutex for RawFairMutex {
+ const INIT: Self = RawFairMutex(< RawMutex as lock_api::RawMutex >::INIT);
+ type GuardMarker = lock_api::RawMutex::GuardMarker;
+ fn lock(&self) {
+ self.0.lock()
+ }
+ 
+ fn try_lock(&self) -> bool {
+ self.0.try_lock()
+ }
+ 
+ fn unlock(&self) {
+ self.unlock_fair()
+ }
+ 
+ fn is_locked(&self) -> bool {
+ self.0.is_locked()
+ }
+ 
+}
+
+unsafe impl lock_api::RawMutexFair for RawFairMutex {
+ fn unlock_fair(&self) {
+ self.0.unlock_fair()
+ }
+ 
+ fn bump(&self) {
+ self.0.bump()
+ }
+ 
+}
+
+unsafe impl lock_api::RawMutexTimed for RawFairMutex {
+ type Duration = lock_api::RawMutexTimed::Duration;
+ type Instant = lock_api::RawMutexTimed::Instant;
+ fn try_lock_until(&self, timeout: Self::Instant) -> bool {
+ self.0.try_lock_until(timeout)
+ }
+ 
+ fn try_lock_for(&self, timeout: Self::Duration) -> bool {
+ self.0.try_lock_for(timeout)
+ }
+ 
+}
+

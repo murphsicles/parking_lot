@@ -1,0 +1,33 @@
+// Auto-converted from /tmp/df-parking_lot-0.12.5/parking_lot-0.12.5/src/lib.rs
+
+mod condvar;
+mod elision;
+mod fair_mutex;
+mod mutex;
+mod once;
+mod raw_fair_mutex;
+mod raw_mutex;
+mod raw_rwlock;
+mod remutex;
+mod rwlock;
+mod util;
+#[cfg(feature = "deadlock_detection")]
+pub mod deadlock;
+#[cfg(not(feature = "deadlock_detection"))]
+mod deadlock;
+#[cfg(all(feature = "send_guard", feature = "deadlock_detection"))] compile_error!("the `send_guard` and `deadlock_detection` features cannot be used together");
+type GuardMarker = lock_api::GuardSend;
+
+type GuardMarker = lock_api::GuardNoSend;
+
+pub use self::condvar::{ Condvar, WaitTimeoutResult };
+pub use self::fair_mutex::{ const_fair_mutex, FairMutex, FairMutexGuard, MappedFairMutexGuard };
+pub use self::mutex::{ const_mutex, MappedMutexGuard, Mutex, MutexGuard };
+pub use self::once::{ Once, OnceState };
+pub use self::raw_fair_mutex::RawFairMutex;
+pub use self::raw_mutex::RawMutex;
+pub use self::raw_rwlock::RawRwLock;
+pub use self::remutex::{ const_reentrant_mutex, MappedReentrantMutexGuard, RawThreadId, ReentrantMutex, ReentrantMutexGuard };
+pub use self::rwlock::{ const_rwlock, MappedRwLockReadGuard, MappedRwLockWriteGuard, RwLock, RwLockReadGuard, RwLockUpgradableReadGuard, RwLockWriteGuard };
+pub use::lock_api;
+#[cfg(feature = "arc_lock")] pub use self::lock_api::{ ArcMutexGuard, ArcReentrantMutexGuard, ArcRwLockReadGuard, ArcRwLockUpgradableReadGuard, ArcRwLockWriteGuard };

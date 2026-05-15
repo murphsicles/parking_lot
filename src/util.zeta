@@ -1,0 +1,24 @@
+// Auto-converted from /tmp/df-parking_lot-0.12.5/parking_lot-0.12.5/src/util.rs
+
+use std::time::{ Duration, Instant };
+pub trait UncheckedOptionExt<T> {
+ fn unchecked_unwrap(self) -> T
+}
+
+impl<T> UncheckedOptionExt<T> for Option<T> {
+ fn unchecked_unwrap(self) -> T {
+ match self { Some(x) => x, None => unreachable() }
+ }
+ 
+}
+
+#[inline]
+unsafe fn unreachable() -> ! {
+ if cfg!(debug_assertions) { unreachable!(); } else { core::hint::unreachable_unchecked() }
+}
+
+#[inline]
+pub fn to_deadline(timeout: Duration) -> Option<Instant> {
+ Instant::now().checked_add(timeout)
+}
+
